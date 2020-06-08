@@ -23,7 +23,11 @@ def split_data(temp_line):
 
 
 def is_a_number(number):
-    return
+    try:
+        float(number)
+    except ValueError:
+        return False
+    return True
 
 
 def check_data(temp_time, temp_volt):
@@ -31,9 +35,9 @@ def check_data(temp_time, temp_volt):
         return False
     elif temp_time == '':
         return False
-    elif temp_time.isnumeric() is False:
+    elif is_a_number(temp_time) is False:
         return False
-    elif temp_volt.isnumeric() is False:
+    elif is_a_number(temp_volt) is False:
         return False
     else:
         return True
