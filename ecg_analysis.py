@@ -37,7 +37,7 @@ def is_a_number(number):
 
 
 def check_data(temp_time, temp_volt):
-    if temp_volt  == '':
+    if temp_volt == '':
         return False
     elif temp_time == '':
         return False
