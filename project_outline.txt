@@ -1,0 +1,14 @@
+1. User interface that lets users enter CSV file name that contains data
+2. Load data from the CSV file
+3. Check data to make sure it is in the right format and right data type.
+4. Plot the ECG data
+5. If the file contains a voltage reading outside of the normal range of
++/- 300 mv, add a warning entry to the log file indicating the name of the
+test file and that voltages exceeded the normal range.
+6. Create Metrics Dictionary
+7. Calculate duration of ECG and add it to Metrics dictionary
+8. Calculate voltage extremes and add it to the metrics dictionary
+9. Calculate the number of heart beats and add that to the dictionary
+10. Calculate the average heart rate and add it to the dictionary
+11. Create a list of times that a beat occurred
+12. Create a json file that outputs this dictionary
