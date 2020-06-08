@@ -1,13 +1,13 @@
-def output_file(metrics):
+def output_file(data):
     pass
 
 
 def metrics(raw_data):
-    pass
+    return
 
 
 def read_input(filename):
-    pass
+    return
 
 
 def interface():
