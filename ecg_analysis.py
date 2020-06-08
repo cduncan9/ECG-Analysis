@@ -1,4 +1,5 @@
 import logging
+import math
 
 
 def output_file(data):
@@ -39,16 +40,25 @@ def check_data(temp_time, temp_volt):
         return False
     elif is_a_number(temp_volt) is False:
         return False
+    elif math.isnan(temp_time) is True:
+        return False
+    elif math.isnan(temp_volt) is True:
+        return False
     else:
         return True
 
 
 def read_input(filename):
+
     with open(filename, 'r') as f:
         temp_line = f.readline()
         while temp_line != " \n":
             temp_time, temp_volt = split_data(temp_line)
             temp_check = check_data(temp_time, temp_volt)
+            if temp_check is True:
+                temp_time = int(temp_time)
+                temp_volt = int(temp_volt)
+
     return
 
 
