@@ -1,5 +1,6 @@
 import logging
 import math
+import matplotlib.pyplot as plt
 
 
 logging.basicConfig(filename='bad_data.log',
@@ -75,8 +76,6 @@ def read_input(filename):
 def interface():
     filename = input("Please enter the filename: ")
     ecg_time, ecg_volt = read_input(filename)
-    print(ecg_time)
-    print(ecg_volt)
     ecg_metrics = metrics(ecg_time, ecg_volt)
     output_file(ecg_metrics)
 
