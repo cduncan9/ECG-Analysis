@@ -22,6 +22,10 @@ def split_data(temp_line):
     return time, volt
 
 
+def is_a_number(number):
+    return
+
+
 def check_data(temp_time, temp_volt):
     if temp_volt  == '':
         return False

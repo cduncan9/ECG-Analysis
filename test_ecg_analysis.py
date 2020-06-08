@@ -22,3 +22,15 @@ def test_check_data(time, volt, expected):
     from ecg_analysis import check_data
     answer = check_data(time, volt)
     assert answer == expected
+
+
+@pytest.mark.parametrize("test_num, exp", [
+    ("1", True),
+    ("0.5", True),
+    ("-0.56677", True),
+    ("Happy", False),
+    ("#*$(", False)])
+def test_is_a_number(test_num, exp):
+    from ecg_analysis import is_a_number
+    answer = is_a_number(test_num)
+    assert answer == exp
