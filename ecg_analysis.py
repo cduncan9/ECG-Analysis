@@ -15,11 +15,17 @@ def split_data(temp_line):
     volt = volt.strip(" ")
     return time, volt
 
+
+def check_data(temp_time, temp_volt):
+    return
+
+
 def read_input(filename):
     with open(filename, 'r') as f:
         temp_line = f.readline()
         while temp_line != " \n":
             temp_time, temp_volt = split_data(temp_line)
+            temp_check = check_data(temp_time, temp_volt)
     return
 
 
