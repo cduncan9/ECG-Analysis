@@ -1,3 +1,6 @@
+import logging
+
+
 def output_file(data):
     pass
 
@@ -11,8 +14,11 @@ def split_data(temp_line):
     temp_list = temp_line.split(",")
     time = temp_list[0]
     time = time.strip(" ")
-    volt = temp_list[1]
-    volt = volt.strip(" ")
+    if len(temp_list) == 2:
+        volt = temp_list[1]
+        volt = volt.strip(" ")
+    else:
+        volt = ''
     return time, volt
 
 
