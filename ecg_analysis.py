@@ -7,7 +7,13 @@ def metrics(raw_data):
 
 
 def split_data(temp_line):
-    return
+    temp_line = temp_line.strip("\n")
+    temp_list = temp_line.split(",")
+    time = temp_list[0]
+    time = time.strip(" ")
+    volt = temp_list[1]
+    volt = volt.strip(" ")
+    return time, volt
 
 def read_input(filename):
     with open(filename, 'r') as f:
