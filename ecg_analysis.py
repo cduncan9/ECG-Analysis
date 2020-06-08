@@ -23,7 +23,16 @@ def split_data(temp_line):
 
 
 def check_data(temp_time, temp_volt):
-    return
+    if temp_volt  == '':
+        return False
+    elif temp_time == '':
+        return False
+    elif temp_time.isnumeric() is False:
+        return False
+    elif temp_volt.isnumeric() is False:
+        return False
+    else:
+        return True
 
 
 def read_input(filename):
