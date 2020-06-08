@@ -1,11 +1,14 @@
 import pytest
 
 
-def test_split_data():
+@pytest.mark.parametrize("string, exp", [
+    ('1, 2', ('1', '2')),
+    ('1, ', ('1', '')),
+    ('2', ('2', ''))])
+def test_split_data(string, exp):
     from ecg_analysis import split_data
-    expected = '1', '2'
-    answer = split_data('1, 2')
-    assert answer == expected
+    answer = split_data(string)
+    assert answer == exp
 
 
 @pytest.mark.parametrize("time, volt, expected", [
