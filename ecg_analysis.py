@@ -6,7 +6,14 @@ def metrics(raw_data):
     return
 
 
+def split_data(temp_line):
+    return
+
 def read_input(filename):
+    with open(filename, 'r') as f:
+        temp_line = f.readline()
+        while temp_line != " \n":
+            temp_time, temp_volt = split_data(temp_line)
     return
 
 
