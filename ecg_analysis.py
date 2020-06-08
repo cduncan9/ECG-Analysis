@@ -11,7 +11,7 @@ def output_file(data):
     pass
 
 
-def metrics(raw_data):
+def metrics(raw_time, raw_volt):
     return
 
 
@@ -56,6 +56,7 @@ def check_data(temp_time, temp_volt):
 def read_input(filename):
     time = list()
     volt = list()
+    check_max_val = 0
     with open(filename, 'r') as f:
         temp_line = f.readline()
         while temp_line != "":
@@ -65,11 +66,16 @@ def read_input(filename):
                 temp_time = float(temp_time)
                 time.append(temp_time)
                 temp_volt = float(temp_volt)
+                if temp_volt > 300 or temp_volt < -300:
+                    check_max_val = 1
                 volt.append(temp_volt)
             else:
                 logging.error('Bad data point,'
                               'skipping to next line')
             temp_line = f.readline()
+        if check_max_val == 1:
+            logging.warning("This file contains a value outside the "
+                            "normal operating range of +/- 300 mV.")
     return time, volt
 
 
