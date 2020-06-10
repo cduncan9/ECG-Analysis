@@ -2,6 +2,7 @@ import pytest
 import math
 import numpy as np
 
+
 @pytest.mark.parametrize("string, exp", [
     ('1, 2', ('1', '2')),
     ('1, ', ('1', '')),
