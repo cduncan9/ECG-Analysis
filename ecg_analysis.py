@@ -20,7 +20,7 @@ def calc_mean_hr_bpm():
     return
 
 
-def calc_num_beats():
+def calc_num_beats(volt):
     return
 
 
