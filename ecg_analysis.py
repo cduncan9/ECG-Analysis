@@ -1,6 +1,7 @@
 import logging
 import math
 import matplotlib.pyplot as plt
+import heartpy as hp
 
 
 logging.basicConfig(filename='bad_data.log',
@@ -11,7 +12,14 @@ def output_file(data):
     pass
 
 
-def metrics(raw_time, raw_volt):
+def filter_data(time, raw_volt):
+    sample_rate = 1 / (time[1] - time[0])
+    volt = hp.filter_signal(raw_volt, [5, 45], sample_rate, 2, 'bandpass')
+    return volt
+
+
+def metrics(time, raw_volt):
+    volt = filter_data(time, raw_volt)
     return
 
 
