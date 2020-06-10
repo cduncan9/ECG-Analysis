@@ -65,8 +65,20 @@ def test_calc_voltage_extremes():
 
 def test_calc_num_beats():
     from ecg_analysis import calc_num_beats
-    time = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     data = [3, 4, 3, 10, 4, 3, 4, 10, 3, 4]
     expected = 2
-    answer = calc_num_beats(time, data)
+    answer = calc_num_beats(data)
     assert answer == expected
+
+
+def test_calc_mean_hr_bpm():
+    from ecg_analysis import calc_mean_hr_bpm
+    time = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+            15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+            27, 28, 29, 30]
+    volts = [0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5,
+             0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0]
+    expected = 14.5
+    answer = calc_mean_hr_bpm(time, volts)
+    assert answer == expected
+

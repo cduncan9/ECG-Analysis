@@ -20,7 +20,7 @@ def calc_mean_hr_bpm():
     return
 
 
-def calc_num_beats(time, volt):
+def calc_num_beats(volt):
     num_beats = 0
     extremes = calc_voltage_extremes(volt)
     maximum = extremes[1]
@@ -56,7 +56,7 @@ def metrics(time, raw_volt):
     volt = filter_data(time, raw_volt)
     duration = calc_duration(time)
     voltage_extremes = calc_voltage_extremes(volt)
-    num_beats = calc_num_beats(time, volt)
+    num_beats = calc_num_beats(volt)
     mean_hr_bpm = calc_mean_hr_bpm()
     beats = calc_beats()
     return
