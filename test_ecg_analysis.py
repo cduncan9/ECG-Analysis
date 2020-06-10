@@ -105,5 +105,5 @@ def test_calc_metrics():
              0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 0]
     answer = calc_metrics(time, volts)
     expected = {"duration": .31, "voltage_extremes": (0, 5),
-               "num_beats": 7, "mean_hr_bpm": 145,
-               "beats": [3, 7, 11, 15, 19, 24, 28]}
+                "num_beats": 7, "mean_hr_bpm": 145,
+                "beats": [3, 7, 11, 15, 19, 24, 28]}
