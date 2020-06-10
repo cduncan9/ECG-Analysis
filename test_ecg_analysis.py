@@ -53,3 +53,11 @@ def test_calc_duration():
     expected = 1
     answer = calc_duration(time)
     assert answer == expected
+
+
+def test_calc_voltage_extremes():
+    from ecg_analysis import calc_voltage_extremes
+    data = [0, 1, 1, -4, 18, -7, 2, 0]
+    expected = (-7, 18)
+    answer = calc_voltage_extremes(data)
+    assert answer == expected
