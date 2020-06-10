@@ -138,29 +138,36 @@ def check_data(temp_time, temp_volt):
         return True
 
 
+def log_if_bad_data(temp_check):
+    if temp_check is False:
+        logging.error('Bad data point,'
+                      'skipping to next line')
+    return
+
+
+def log_if_data_too_high(volt):
+    return
+
+
 def read_input(filename):
     time = list()
     volt = list()
-    check_max_val = 0
     with open(filename, 'r') as f:
         temp_line = f.readline()
         while temp_line != "":
             temp_time, temp_volt = split_data(temp_line)
             temp_check = check_data(temp_time, temp_volt)
+            log_if_bad_data(temp_check)
             if temp_check is True:
-                temp_time = float(temp_time)
-                time.append(temp_time)
-                temp_volt = float(temp_volt)
+                time.append(float(temp_time))
                 if temp_volt > 300 or temp_volt < -300:
                     check_max_val = 1
-                volt.append(temp_volt)
-            else:
-                logging.error('Bad data point,'
-                              'skipping to next line')
+                volt.append(float(temp_volt))
             temp_line = f.readline()
         if check_max_val == 1:
             logging.warning("This file contains a value outside the "
                             "normal operating range of +/- 300 mV.")
+    log_if_data_too_high(volt)
     return time, volt
 
 
