@@ -3,14 +3,19 @@ import math
 import matplotlib.pyplot as plt
 import heartpy as hp
 import numpy as np
+import json
 
 
 logging.basicConfig(filename='bad_data.log',
                     level=logging.INFO)
 
 
-def output_file(data):
-    pass
+def output_file(metrics, filename):
+    filename_split = filename.split(".")
+    file = filename_split[0]
+    filename = file + ".json"
+    with open(filename, 'x') as out_file:
+        json.dump(metrics, out_file)
 
 
 def calc_beats(time, volts):
@@ -61,19 +66,26 @@ def calc_duration(time):
 def filter_data(time, raw_volt):
     sample_rate = 1 / (time[1] - time[0])
     volt = hp.filter_signal(raw_volt, [5, 20], sample_rate, 2, 'bandpass')
-    plt.plot(time, volt)
-    plt.show()
     return volt
 
 
-def metrics(time, raw_volt):
+def make_dictionary(duration, voltage_extremes, num_beats, mean_hr_bpm, beats):
+    metrics = {"duration": duration, "voltage_extremes": voltage_extremes,
+               "num_beats": num_beats, "mean_hr_bpm": mean_hr_bpm,
+               "beats": beats}
+    return metrics
+
+
+def calc_metrics(time, raw_volt):
     volt = filter_data(time, raw_volt)
     duration = calc_duration(time)
     voltage_extremes = calc_voltage_extremes(volt)
     num_beats = calc_num_beats(volt)
     mean_hr_bpm = calc_mean_hr_bpm(time, volt)
-    beats = calc_beats()
-    return
+    beats = calc_beats(time, volt)
+    metrics = make_dictionary(duration, voltage_extremes, num_beats,
+                              mean_hr_bpm, beats)
+    return metrics
 
 
 def split_data(temp_line):
@@ -143,8 +155,8 @@ def read_input(filename):
 def interface():
     filename = input("Please enter the filename: ")
     ecg_time, ecg_volt = read_input(filename)
-    ecg_metrics = metrics(ecg_time, ecg_volt)
-    output_file(ecg_metrics)
+    metrics = calc_metrics(ecg_time, ecg_volt)
+    output_file(metrics, filename)
 
 
 if __name__ == '__main__':
