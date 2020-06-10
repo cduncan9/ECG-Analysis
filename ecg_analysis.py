@@ -18,6 +18,22 @@ def output_file(metrics, filename):
         json.dump(metrics, out_file)
 
 
+def group_similar_values(beat_list):
+    big_list = [[]]
+    x = 0
+    for i in range(len(beat_list)):
+        diff = beat_list[i] - beat_list[i - 1]
+        if diff > 0.1:
+            x += 1
+            big_list.append([])
+        big_list[x].append(beat_list[i])
+    median_list = list()
+    for i in range(len(big_list)):
+        val = math.floor(len(big_list[i])/2)
+        median_list.append(big_list[i][val])
+    return median_list
+
+
 def calc_beats(time, volts):
     beat_list = list()
     extremes = calc_voltage_extremes(volts)
@@ -25,6 +41,7 @@ def calc_beats(time, volts):
     for i in range(len(volts)):
         if volts[i] > (maximum / 2):
             beat_list.append(time[i])
+    beat_list = group_similar_values(beat_list)
     return beat_list
 
 
@@ -40,14 +57,9 @@ def calc_mean_hr_bpm(time, volts):
     return ave
 
 
-def calc_num_beats(volt):
-    num_beats = 0
-    extremes = calc_voltage_extremes(volt)
-    maximum = extremes[1]
-    for v in volt:
-        if v > (maximum / 2):
-            num_beats += 1
-    return num_beats
+def calc_num_beats(time, volt):
+    beats = calc_beats(time, volt)
+    return len(beats)
 
 
 def calc_voltage_extremes(volt):
@@ -80,7 +92,7 @@ def calc_metrics(time, raw_volt):
     volt = filter_data(time, raw_volt)
     duration = calc_duration(time)
     voltage_extremes = calc_voltage_extremes(volt)
-    num_beats = calc_num_beats(volt)
+    num_beats = calc_num_beats(time, volt)
     mean_hr_bpm = calc_mean_hr_bpm(time, volt)
     beats = calc_beats(time, volt)
     metrics = make_dictionary(duration, voltage_extremes, num_beats,
