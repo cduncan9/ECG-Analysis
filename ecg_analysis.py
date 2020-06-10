@@ -7,10 +7,12 @@ import json
 
 
 logging.basicConfig(filename='bad_data.log',
+                    filemode='w',
                     level=logging.INFO)
 
 
 def output_file(metrics, filename):
+    logging.info('Creating JSON output file')
     filename_split = filename.split(".")
     file = filename_split[0]
     filename = file + ".json"
@@ -35,6 +37,8 @@ def group_similar_values(beat_list):
 
 
 def calc_beats(time, volts):
+    logging.info('Finding the times that each '
+                 'heart beat occurred')
     beat_list = list()
     extremes = calc_voltage_extremes(volts)
     maximum = extremes[1]
@@ -46,6 +50,8 @@ def calc_beats(time, volts):
 
 
 def calc_mean_hr_bpm(time, volts):
+    logging.info('Calculating the mean heart rate '
+                 'in beats-per-minute')
     beat_list = calc_beats(time, volts)
     hr_list = list()
     for i in range(len(beat_list)):
@@ -58,11 +64,13 @@ def calc_mean_hr_bpm(time, volts):
 
 
 def calc_num_beats(time, volt):
+    logging.info('Calculating the number of heart beats')
     beats = calc_beats(time, volt)
     return len(beats)
 
 
 def calc_voltage_extremes(volt):
+    logging.info('Finding max and min ECG values')
     maximum = max(volt)
     minimum = min(volt)
     ans = (minimum, maximum)
@@ -70,12 +78,14 @@ def calc_voltage_extremes(volt):
 
 
 def calc_duration(time):
+    logging.info('Calculating ECG duration')
     first = time[0]
     last = time[-1]
     return last - first
 
 
 def filter_data(time, raw_volt):
+    logging.info('Filtering Data')
     sample_rate = 1 / (time[1] - time[0])
     volt = hp.filter_signal(raw_volt, [5, 20], sample_rate, 2, 'bandpass')
     return volt
@@ -89,6 +99,7 @@ def make_dictionary(duration, voltage_extremes, num_beats, mean_hr_bpm, beats):
 
 
 def calc_metrics(time, raw_volt):
+    logging.info('Beginning analysis of ECG data.')
     volt = filter_data(time, raw_volt)
     duration = calc_duration(time)
     voltage_extremes = calc_voltage_extremes(volt)
