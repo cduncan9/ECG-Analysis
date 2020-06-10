@@ -2,6 +2,7 @@ import logging
 import math
 import matplotlib.pyplot as plt
 import heartpy as hp
+import numpy as np
 
 
 logging.basicConfig(filename='bad_data.log',
@@ -23,8 +24,15 @@ def calc_beats(time, volts):
 
 
 def calc_mean_hr_bpm(time, volts):
-
-    return
+    beat_list = calc_beats(time, volts)
+    hr_list = list()
+    for i in range(len(beat_list)):
+        if i > 0:
+            diff = beat_list[i] - beat_list[i-1]
+            hr_list.append(diff)
+    ave_hr = [(1/x)*60 for x in hr_list]
+    ave = np.mean(ave_hr)
+    return ave
 
 
 def calc_num_beats(volt):
