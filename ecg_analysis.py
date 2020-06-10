@@ -20,6 +20,8 @@ def filter_data(time, raw_volt):
 
 def metrics(time, raw_volt):
     volt = filter_data(time, raw_volt)
+    plt.plot(time, volt)
+    plt.show()
     return
 
 
