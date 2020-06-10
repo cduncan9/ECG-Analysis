@@ -46,3 +46,10 @@ def test_is_a_number(test_num, exp):
 #     volt_w_noise = [sample_data[i] * noise[i] for i in range(len(time))]
 #     answer = filter_data(time, volt_w_noise)
 #     assert answer[3] == sample_data[3]
+
+def test_calc_duration():
+    from ecg_analysis import calc_duration
+    time = np.linspace(0, 1, 200)
+    expected = 1
+    answer = calc_duration(time)
+    assert answer == expected
