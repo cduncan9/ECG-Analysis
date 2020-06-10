@@ -28,8 +28,10 @@ def calc_voltage_extremes():
     return
 
 
-def calc_duration():
-    return
+def calc_duration(time):
+    first = time[0]
+    last = time[-1]
+    return last - first
 
 
 def filter_data(time, raw_volt):
@@ -40,7 +42,7 @@ def filter_data(time, raw_volt):
 
 def metrics(time, raw_volt):
     volt = filter_data(time, raw_volt)
-    duration = calc_duration()
+    duration = calc_duration(time)
     voltage_extremes = calc_voltage_extremes()
     num_beats = calc_num_beats()
     mean_hr_bpm = calc_mean_hr_bpm()
