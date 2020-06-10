@@ -3,15 +3,19 @@ import math
 import matplotlib.pyplot as plt
 import heartpy as hp
 import numpy as np
+import json
 
 
 logging.basicConfig(filename='bad_data.log',
                     level=logging.INFO)
 
 
-def output_file(metrics):
-
-    pass
+def output_file(metrics, filename):
+    filename_split = filename.split(".")
+    file = filename_split[0]
+    filename = file + ".json"
+    with open(filename, 'x') as out_file:
+        json.dump(metrics, out_file)
 
 
 def calc_beats(time, volts):
@@ -152,7 +156,7 @@ def interface():
     filename = input("Please enter the filename: ")
     ecg_time, ecg_volt = read_input(filename)
     metrics = calc_metrics(ecg_time, ecg_volt)
-    output_file(metrics)
+    output_file(metrics, filename)
 
 
 if __name__ == '__main__':
