@@ -116,3 +116,10 @@ def test_log_if_bad_data_is_made():
         log_if_bad_data(False)
     log_c.check(('root', 'ERROR', 'Bad data point, '
                 'skipping to next line'))
+
+
+def test_log_if_bad_data_is_not_made():
+    from ecg_analysis import log_if_bad_data
+    with LogCapture() as log_c:
+        log_if_bad_data(True)
+    log_c.check()
