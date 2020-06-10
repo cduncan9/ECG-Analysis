@@ -1,6 +1,7 @@
 import logging
 import math
 import matplotlib.pyplot as plt
+import heartpy as hp
 
 
 logging.basicConfig(filename='bad_data.log',
@@ -11,7 +12,16 @@ def output_file(data):
     pass
 
 
-def metrics(raw_data):
+def filter_data(time, raw_volt):
+    sample_rate = 1 / (time[1] - time[0])
+    volt = hp.filter_signal(raw_volt, [5, 45], sample_rate, 2, 'bandpass')
+    return volt
+
+
+def metrics(time, raw_volt):
+    volt = filter_data(time, raw_volt)
+    plt.plot(time, volt)
+    plt.show()
     return
 
 
@@ -56,6 +66,7 @@ def check_data(temp_time, temp_volt):
 def read_input(filename):
     time = list()
     volt = list()
+    check_max_val = 0
     with open(filename, 'r') as f:
         temp_line = f.readline()
         while temp_line != "":
@@ -65,11 +76,16 @@ def read_input(filename):
                 temp_time = float(temp_time)
                 time.append(temp_time)
                 temp_volt = float(temp_volt)
+                if temp_volt > 300 or temp_volt < -300:
+                    check_max_val = 1
                 volt.append(temp_volt)
             else:
                 logging.error('Bad data point,'
                               'skipping to next line')
             temp_line = f.readline()
+        if check_max_val == 1:
+            logging.warning("This file contains a value outside the "
+                            "normal operating range of +/- 300 mV.")
     return time, volt
 
 
