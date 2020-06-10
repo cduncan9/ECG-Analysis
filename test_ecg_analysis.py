@@ -65,7 +65,8 @@ def test_calc_voltage_extremes():
 
 def test_calc_num_beats():
     from ecg_analysis import calc_num_beats
-    data = [0, 0, 0, 10, 0, 0, 0, 10, 0, 0]
+    time = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    data = [3, 4, 3, 10, 4, 3, 4, 10, 3, 4]
     expected = 2
-    answer = calc_num_beats(data)
+    answer = calc_num_beats(time, data)
     assert answer == expected
