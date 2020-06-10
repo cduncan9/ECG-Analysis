@@ -1,6 +1,6 @@
 import pytest
-import math
 import numpy as np
+from testfixtures import LogCapture
 
 
 @pytest.mark.parametrize("string, exp", [
@@ -108,3 +108,11 @@ def test_calc_metrics():
     expected = {"duration": .31, "voltage_extremes": (0, 5),
                 "num_beats": 7, "mean_hr_bpm": 145,
                 "beats": [3, 7, 11, 15, 19, 24, 28]}
+
+
+def test_log_if_bad_data_is_made():
+    from ecg_analysis import log_if_bad_data
+    with LogCapture() as log_c:
+        log_if_bad_data(False)
+    log_c.check(('root', 'ERROR', 'Bad data point, '
+                'skipping to next line'))

@@ -140,7 +140,7 @@ def check_data(temp_time, temp_volt):
 
 def log_if_bad_data(temp_check):
     if temp_check is False:
-        logging.error('Bad data point,'
+        logging.error('Bad data point, '
                       'skipping to next line')
     return
 
