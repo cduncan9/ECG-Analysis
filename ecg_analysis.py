@@ -2,6 +2,7 @@ import logging
 import math
 import matplotlib.pyplot as plt
 import heartpy as hp
+import numpy as np
 
 
 logging.basicConfig(filename='bad_data.log',
@@ -12,16 +13,66 @@ def output_file(data):
     pass
 
 
+def calc_beats(time, volts):
+    beat_list = list()
+    extremes = calc_voltage_extremes(volts)
+    maximum = extremes[1]
+    for i in range(len(volts)):
+        if volts[i] > (maximum / 2):
+            beat_list.append(time[i])
+    return beat_list
+
+
+def calc_mean_hr_bpm(time, volts):
+    beat_list = calc_beats(time, volts)
+    hr_list = list()
+    for i in range(len(beat_list)):
+        if i > 0:
+            diff = beat_list[i] - beat_list[i-1]
+            hr_list.append(diff)
+    ave_hr = [(1/x)*60 for x in hr_list]
+    ave = np.mean(ave_hr)
+    return ave
+
+
+def calc_num_beats(volt):
+    num_beats = 0
+    extremes = calc_voltage_extremes(volt)
+    maximum = extremes[1]
+    for v in volt:
+        if v > (maximum / 2):
+            num_beats += 1
+    return num_beats
+
+
+def calc_voltage_extremes(volt):
+    maximum = max(volt)
+    minimum = min(volt)
+    ans = (minimum, maximum)
+    return ans
+
+
+def calc_duration(time):
+    first = time[0]
+    last = time[-1]
+    return last - first
+
+
 def filter_data(time, raw_volt):
     sample_rate = 1 / (time[1] - time[0])
-    volt = hp.filter_signal(raw_volt, [5, 45], sample_rate, 2, 'bandpass')
+    volt = hp.filter_signal(raw_volt, [5, 20], sample_rate, 2, 'bandpass')
+    plt.plot(time, volt)
+    plt.show()
     return volt
 
 
 def metrics(time, raw_volt):
     volt = filter_data(time, raw_volt)
-    plt.plot(time, volt)
-    plt.show()
+    duration = calc_duration(time)
+    voltage_extremes = calc_voltage_extremes(volt)
+    num_beats = calc_num_beats(volt)
+    mean_hr_bpm = calc_mean_hr_bpm(time, volt)
+    beats = calc_beats()
     return
 
 
