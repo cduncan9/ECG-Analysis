@@ -12,6 +12,26 @@ def output_file(data):
     pass
 
 
+def calc_beats():
+    return
+
+
+def calc_mean_hr_bpm():
+    return
+
+
+def calc_num_beats():
+    return
+
+
+def calc_voltage_extremes():
+    return
+
+
+def calc_duration():
+    return
+
+
 def filter_data(time, raw_volt):
     sample_rate = 1 / (time[1] - time[0])
     volt = hp.filter_signal(raw_volt, [5, 45], sample_rate, 2, 'bandpass')
@@ -20,8 +40,11 @@ def filter_data(time, raw_volt):
 
 def metrics(time, raw_volt):
     volt = filter_data(time, raw_volt)
-    plt.plot(time, volt)
-    plt.show()
+    duration = calc_duration()
+    voltage_extremes = calc_voltage_extremes()
+    num_beats = calc_num_beats()
+    mean_hr_bpm = calc_mean_hr_bpm()
+    beats = calc_beats()
     return
 
 
