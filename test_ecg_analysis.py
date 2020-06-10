@@ -82,3 +82,14 @@ def test_calc_mean_hr_bpm():
     answer = calc_mean_hr_bpm(time, volts)
     assert answer == expected
 
+
+def test_calc_beats():
+    from ecg_analysis import calc_beats
+    time = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+            15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+            27, 28, 29, 30, 31]
+    volts = [0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5,
+             0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 0]
+    expected = [3, 7, 11, 15, 19, 24, 28]
+    answer = calc_beats(time, volts)
+    assert answer == expected

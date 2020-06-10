@@ -12,11 +12,18 @@ def output_file(data):
     pass
 
 
-def calc_beats():
-    return
+def calc_beats(time, volts):
+    beat_list = list()
+    extremes = calc_voltage_extremes(volts)
+    maximum = extremes[1]
+    for i in range(len(volts)):
+        if volts[i] > (maximum / 2):
+            beat_list.append(time[i])
+    return beat_list
 
 
-def calc_mean_hr_bpm():
+def calc_mean_hr_bpm(time, volts):
+
     return
 
 
@@ -24,9 +31,8 @@ def calc_num_beats(volt):
     num_beats = 0
     extremes = calc_voltage_extremes(volt)
     maximum = extremes[1]
-    for i in range(len(volt)):
-        diff = volt[i] - volt[i-1]
-        if diff > (maximum / 2):
+    for v in volt:
+        if v > (maximum / 2):
             num_beats += 1
     return num_beats
 
@@ -57,7 +63,7 @@ def metrics(time, raw_volt):
     duration = calc_duration(time)
     voltage_extremes = calc_voltage_extremes(volt)
     num_beats = calc_num_beats(volt)
-    mean_hr_bpm = calc_mean_hr_bpm()
+    mean_hr_bpm = calc_mean_hr_bpm(time, volt)
     beats = calc_beats()
     return
 
