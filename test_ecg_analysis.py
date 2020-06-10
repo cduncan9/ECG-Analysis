@@ -1,6 +1,6 @@
 import pytest
-import math
 import numpy as np
+from testfixtures import LogCapture
 
 
 @pytest.mark.parametrize("string, exp", [
@@ -96,15 +96,50 @@ def test_calc_beats():
     assert answer == expected
 
 
-def test_calc_metrics():
-    from ecg_analysis import calc_metrics
-    time = [0, .01, .02, .03, .04, .05, .06, .07, .08, .09,
-            .10, .11, .12, .13, .14, .15, .16, .17, .18, .19,
-            .20, .21, .22, .23, .24, .25, .26, .27, .28, .29,
-            .30, .31]
-    volts = [0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5,
-             0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 0]
-    answer = calc_metrics(time, volts)
-    expected = {"duration": .31, "voltage_extremes": (0, 5),
-                "num_beats": 7, "mean_hr_bpm": 145,
-                "beats": [3, 7, 11, 15, 19, 24, 28]}
+# def test_calc_metrics():
+#     from ecg_analysis import calc_metrics
+#     time = [0, .01, .02, .03, .04, .05, .06, .07, .08, .09,
+#             .10, .11, .12, .13, .14, .15, .16, .17, .18, .19,
+#             .20, .21, .22, .23, .24, .25, .26, .27, .28, .29,
+#             .30, .31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37,
+#             0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45,
+#             0.46, 0.47, 0.48, 0.49, 0.5]
+#     volts = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+#              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+#              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+#              0, 0, 0]
+#     answer = calc_metrics(time, volts)
+#     expected = {"beats": [0.07, 0.28, 0.42], "duration": .5,
+#                 "mean_hr_bpm": 357.1428571428572, "num_beats": 3,
+#                 "voltage_extremes": (0, 1)}
+#     assert answer == expected
+
+
+def test_log_if_bad_data_is_made():
+    from ecg_analysis import log_if_bad_data
+    with LogCapture() as log_c:
+        log_if_bad_data(False)
+    log_c.check(('root', 'ERROR', 'Bad data point, '
+                'skipping to next line'))
+
+
+def test_log_if_bad_data_is_not_made():
+    from ecg_analysis import log_if_bad_data
+    with LogCapture() as log_c:
+        log_if_bad_data(True)
+    log_c.check()
+
+
+def test_log_if_data_too_high_is_made():
+    from ecg_analysis import log_if_data_too_high
+    with LogCapture() as log_c:
+        log_if_data_too_high([24, 25, 26, 27, 28, 29, 30, 310])
+    log_c.check(('root', 'WARNING', "This file contains a value "
+                 "outside the normal operating range of +/- 300 mV."))
+
+
+def test_log_if_data_too_high_is_not_made():
+    from ecg_analysis import log_if_data_too_high
+    with LogCapture() as log_c:
+        log_if_data_too_high([24, 25, 26, 27, 28, 29, 30])
+    log_c.check()
