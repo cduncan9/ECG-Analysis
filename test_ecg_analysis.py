@@ -131,3 +131,10 @@ def test_log_if_data_too_high_is_made():
         log_if_data_too_high([24, 25, 26, 27, 28, 29, 30, 310])
     log_c.check(('root', 'WARNING', "This file contains a value "
                  "outside the normal operating range of +/- 300 mV."))
+
+
+def test_log_if_data_too_high_is_not_made():
+    from ecg_analysis import log_if_data_too_high
+    with LogCapture() as log_c:
+        log_if_data_too_high([24, 25, 26, 27, 28, 29, 30])
+    log_c.check()
