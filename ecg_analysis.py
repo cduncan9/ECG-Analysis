@@ -146,6 +146,11 @@ def log_if_bad_data(temp_check):
 
 
 def log_if_data_too_high(volt):
+    maximum = max(volt)
+    minimum = min(volt)
+    if maximum > 300 or minimum < -300:
+        logging.warning("This file contains a value outside the "
+                        "normal operating range of +/- 300 mV.")
     return
 
 
@@ -160,13 +165,8 @@ def read_input(filename):
             log_if_bad_data(temp_check)
             if temp_check is True:
                 time.append(float(temp_time))
-                if temp_volt > 300 or temp_volt < -300:
-                    check_max_val = 1
                 volt.append(float(temp_volt))
             temp_line = f.readline()
-        if check_max_val == 1:
-            logging.warning("This file contains a value outside the "
-                            "normal operating range of +/- 300 mV.")
     log_if_data_too_high(volt)
     return time, volt
 
