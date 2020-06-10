@@ -25,7 +25,10 @@ def calc_num_beats():
 
 
 def calc_voltage_extremes(volt):
-    return
+    maximum = max(volt)
+    minimum = min(volt)
+    ans = (minimum, maximum)
+    return ans
 
 
 def calc_duration(time):
