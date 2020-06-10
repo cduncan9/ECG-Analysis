@@ -98,9 +98,9 @@ def make_dictionary(duration, voltage_extremes, num_beats, mean_hr_bpm, beats):
     return metrics
 
 
-def calc_metrics(time, raw_volt):
+def calc_metrics(time, volt):
     logging.info('Beginning analysis of ECG data.')
-    volt = filter_data(time, raw_volt)
+    volt = filter_data(time, volt)
     duration = calc_duration(time)
     voltage_extremes = calc_voltage_extremes(volt)
     num_beats = calc_num_beats(time, volt)
