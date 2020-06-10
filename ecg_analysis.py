@@ -9,7 +9,8 @@ logging.basicConfig(filename='bad_data.log',
                     level=logging.INFO)
 
 
-def output_file(data):
+def output_file(metrics):
+
     pass
 
 

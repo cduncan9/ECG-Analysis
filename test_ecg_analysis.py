@@ -93,3 +93,17 @@ def test_calc_beats():
     expected = [3, 7, 11, 15, 19, 24, 28]
     answer = calc_beats(time, volts)
     assert answer == expected
+
+
+def test_calc_metrics():
+    from ecg_analysis import calc_metrics
+    time = [0, .01, .02, .03, .04, .05, .06, .07, .08, .09,
+            .10, .11, .12, .13, .14, .15, .16, .17, .18, .19,
+            .20, .21, .22, .23, .24, .25, .26, .27, .28, .29,
+            .30, .31]
+    volts = [0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5,
+             0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 0]
+    answer = calc_metrics(time, volts)
+    expected = {"duration": .31, "voltage_extremes": (0, 5),
+               "num_beats": 7, "mean_hr_bpm": 145,
+               "beats": [3, 7, 11, 15, 19, 24, 28]}
