@@ -31,3 +31,5 @@ test_data23.json
 test_data28.json
 test_data31.json
 test_data32.json
+.idea
+__pycache__
