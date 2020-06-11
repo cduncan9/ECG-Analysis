@@ -142,6 +142,17 @@ def calc_num_beats(time, volt):
 
 
 def calc_voltage_extremes(volt):
+    """This function calculates the extreme values in the ECG data.
+    
+    This functon takes the volt list as input which is the magnitude
+    of the ECG data, and finds the extreme values using the max() and
+    min() values. The max and min values are returned as a tuple.
+    
+    Args:
+        volts (list): list of ECG voltage magnitudes
+    Returns:
+        tuple: (min, max)
+    """
     logging.info('Finding max and min ECG values')
     maximum = max(volt)
     minimum = min(volt)
@@ -150,6 +161,16 @@ def calc_voltage_extremes(volt):
 
 
 def calc_duration(time):
+    """This calculates the time duration of the ECG data.
+    
+    The time duration is found by subtracting the first time
+    value from the last time value.
+    
+    Args:
+        time (list): list of time values for the ECG data
+    Returns:
+        float : duration of ECG data in seconds
+    """
     logging.info('Calculating ECG duration')
     first = time[0]
     last = time[-1]
@@ -157,6 +178,20 @@ def calc_duration(time):
 
 
 def filter_data(time, raw_volt):
+    """This function filters out noise below 10 Hz and above 50Hz
+    
+    This filter takes the time and raw_volt data as input and
+    filters out noises below 10 Hz and above 50 Hz using the heartpy
+    function filter_signal. See documentation on the filter_signal function
+    at: https://python-heart-rate-analysis-toolkit.readthedocs.io/en/
+    latest/_modules/heartpy/filtering.html
+    
+    Args:
+        time (list): list of time values for the ECG data
+        volts (list): list of ECG voltage magnitudes
+    Returns:
+        list : the filtered ECG voltage values
+    """
     logging.info('Filtering Data')
     sample_rate = 1 / (time[1] - time[0])
     volt = hp.filter_signal(raw_volt, [5, 20], sample_rate, 2, 'bandpass')
@@ -164,6 +199,21 @@ def filter_data(time, raw_volt):
 
 
 def make_dictionary(duration, voltage_extremes, num_beats, mean_hr_bpm, beats):
+    """This function returns a dictionary of ECG metric data
+    
+    This function makes a dictionary containing all of the ECG metric data,
+    which is passed into the function as the function's input parameters.
+    
+    Args:
+        duration (float): the time duration of the ECG data
+        voltage_extremes (tuple): a tuple containing the min and max voltages
+        num_beats (int): the number of heart beats in the ECG data
+        mean_hr_bpm (float): the mean heart rate in beats per minutes
+        beats (list): the list of times corresponding to heart beats
+    
+    Returns:
+        dictionary : dictionary containing ecg metrics
+    """
     metrics = {"duration": duration, "voltage_extremes": voltage_extremes,
                "num_beats": num_beats, "mean_hr_bpm": mean_hr_bpm,
                "beats": beats}
@@ -171,6 +221,27 @@ def make_dictionary(duration, voltage_extremes, num_beats, mean_hr_bpm, beats):
 
 
 def calc_metrics(time, volt):
+    """This function calls the functions necessary to calculate the
+    ECG metrics
+    
+    This function takes the time and volt lists as inputs and calls several
+    functions to return a dictionary of ECG metrics. First filter_data() is
+    called to get the voltage data without the high and low noise. Then the
+    duration is calculated using the function calc_duration(), the voltage extremes
+    are calculated by calling the function calc_voltage_extremes(), the number
+    of beats is calculated by calling the function calc_num_beats(), the 
+    average heart rate is calculated by calling the function calc_mean_hr_bpm(),
+    the list of times corresponding to heart beats is calculated by calling the
+    function calc_beats(). All of the metric data is put into a dictionare by calling
+    the function make_dictionary.
+    
+    Args:
+        time (list): list of time values for the ECG data
+        volts (list): list of ECG voltage magnitudes
+    
+    Returns:
+        dictionary : dictionary containing ecg metrics
+    """
     logging.info('Beginning analysis of ECG data.')
     volt = filter_data(time, volt)
     duration = calc_duration(time)
@@ -184,6 +255,8 @@ def calc_metrics(time, volt):
 
 
 def split_data(temp_line):
+    """
+    """
     temp_line = temp_line.strip("\n")
     temp_list = temp_line.split(",")
     time = temp_list[0]
