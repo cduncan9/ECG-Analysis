@@ -12,6 +12,20 @@ logging.basicConfig(filename='bad_data.log',
 
 
 def output_file(metrics, filename):
+    """This function writes the output json file for the ECG data
+    
+    This function takes the dictionary of ECG metrics and the name
+    of the csv file as inputs. The name of the csv file is split
+    into a list at the period and the first item of the list is
+    put into a string followed by .json to create the filename.
+    Using a with statement and a .dump() command the json file is
+    written.
+    
+    Args:
+        metrics (dict): Dictionary containing ECG metrics including
+        the time duration, extreme values, number of beats,
+        time points of beats, and mean heart rate in bpm.
+    """
     logging.info('Creating JSON output file')
     filename_split = filename.split(".")
     file = filename_split[0]
@@ -21,6 +35,21 @@ def output_file(metrics, filename):
 
 
 def group_similar_values(beat_list):
+    """This returns a list of time points that represents heart beats
+    
+    The input argument beat_list contains a list of time values
+    that correspond to voltages that are above half the max voltage.
+    The list beat_list has groups of voltages that represent heart beats.
+    For each group of times the median time is selected to be the heart
+    beat and is appended to the list median_list which is returned and
+    used as the list of times when heart beats occur.
+    
+    Args:
+        beat_list (list): This list contains all times that correspond
+        to voltages over one half of the max voltage.
+    Returns:
+        list : a list of time points representing heart beats
+    """
     big_list = [[]]
     x = 0
     for i in range(len(beat_list)):
@@ -37,6 +66,22 @@ def group_similar_values(beat_list):
 
 
 def calc_beats(time, volts):
+    """This function returns the time points of heart beats by looking
+    at the voltage values
+    
+    This function takes the time and voltage lists as input. The max voltage
+    is stored in the variable maximum by calling the function calc_voltage_extremes()
+    and selecting the max value. A for loop loops through the voltage values and
+    stores the time points where the voltage is greater than half of the max
+    voltage. This list of times is sent to the function group_similar_values() which
+    returns the list of times corresponding to heart beats.
+    
+    Args:
+        time (list): list of time values for the ECG data
+        volts (list): list of ECG voltage magnitudes
+    Returns:
+        list : list of time values corresponding to heart beats
+    """
     logging.info('Finding the times that each '
                  'heart beat occurred')
     beat_list = list()
@@ -50,6 +95,21 @@ def calc_beats(time, volts):
 
 
 def calc_mean_hr_bpm(time, volts):
+    """This function returns the average heart rate over the ECG data
+    
+    The two lists time and volts are used as input parameters and are sent
+    to the function calc_beats which returns the list of time points corresponding
+    to heart beats. Using a for loop the time between beats are stored in the
+    list hr_list. The inverse of the time between the beats is multiplied by
+    60 to convert beats per second to beats per minute. The average of this
+    list of heart rates is calculated by finding the mean of the heart rates.
+    
+    Args:
+        time (list): list of time values for the ECG data
+        volts (list): list of ECG voltage magnitudes
+    Returns:
+        float : mean heart rate over the ECG data
+    """
     logging.info('Calculating the mean heart rate '
                  'in beats-per-minute')
     beat_list = calc_beats(time, volts)
@@ -64,6 +124,18 @@ def calc_mean_hr_bpm(time, volts):
 
 
 def calc_num_beats(time, volt):
+    """This returns the number of heart beats over the ECG data.
+    
+    This function calls the function calc_beats to get the list
+    of heart beats for the ECG data. The length of this list
+    returned which is the number of beats in the list.
+    
+    Args:
+        time (list): list of time values for the ECG data
+        volts (list): list of ECG voltage magnitudes
+    Returns:
+        int : the number of beats in the ECG data
+    """
     logging.info('Calculating the number of heart beats')
     beats = calc_beats(time, volt)
     return len(beats)
