@@ -1,4 +1,4 @@
-# ECG Analysis Assignment
+# ECG Analysis Assignment [![Build Status](https://travis-ci.com/BME547-Summer2020/ecg-analysis-cduncan9.svg?token=RLd1CpbXx8eP2MxfSyyp&branch=master)](https://travis-ci.com/BME547-Summer2020/ecg-analysis-cduncan9)
 ---
 ### Using This Program
 This program is very simple and user friendly. Using the computer terminal, navigate to the folder containing the python module ecg_analysis. Start running the module ecg_analysis. You will be prompted to enter the name of the file containing the ECG time and voltage data. This software only works with '.csv' files, so ensure that you have your data in the correct file type. Enter the name of the '.csv' file and hit enter. The rest of the ECG analysis works behind the scenes and requires no further user input. The output of this software is located in a JSON file which is saves with the same name as the input data file except with '.json' as the file extension. Contained within this file are the ECG metrics `beats`, `mean_hr_bpm`, `voltage_extremes`, `num_beats`, and `duration` which are all described in the following section. 
