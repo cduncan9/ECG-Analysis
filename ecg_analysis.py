@@ -229,7 +229,26 @@ def make_dictionary(duration, voltage_extremes, num_beats, mean_hr_bpm, beats):
     return metrics
 
 
-def calc_metrics(time, volt):
+def plot_data(time, volt, filename):
+    """This function plots the ECG data for a file
+
+    This function takes three arguments as inputs: time, volt,
+    and filename. It uses matplotlib.pyplot to plot the time and
+    voltage pairs and uses the filename as the title.
+
+    Args:
+        time (list): list of time values for the ECG data
+        volts (list): list of ECG voltage magnitudes
+        filename (str): the string of the filename to be opened
+    """
+    plt.plot(time, volt)
+    plt.title(filename)
+    plt.xlabel("Time (s)")
+    plt.ylabel("Voltage (mV)")
+    plt.show()
+
+
+def calc_metrics(time, volt, filename):
     """This function calls the functions necessary to calculate the
     ECG metrics
 
@@ -259,6 +278,7 @@ def calc_metrics(time, volt):
     num_beats = calc_num_beats(time, volt)
     mean_hr_bpm = calc_mean_hr_bpm(time, volt)
     beats = calc_beats(time, volt)
+    plot_data(time, volt, filename)
     metrics = make_dictionary(duration, voltage_extremes, num_beats,
                               mean_hr_bpm, beats)
     return metrics
@@ -421,7 +441,7 @@ def interface():
     """
     filename = input("Please enter the filename: ")
     ecg_time, ecg_volt = read_input(filename)
-    metrics = calc_metrics(ecg_time, ecg_volt)
+    metrics = calc_metrics(ecg_time, ecg_volt, filename)
     output_file(metrics, filename)
 
 

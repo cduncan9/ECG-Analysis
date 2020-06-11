@@ -1,0 +1,13 @@
+INFO:root:Beginning analysis of ECG data.
+INFO:root:Filtering Data
+INFO:root:Calculating ECG duration
+INFO:root:Finding max and min ECG values
+INFO:root:Calculating the number of heart beats
+INFO:root:Finding the times that each heart beat occurred
+INFO:root:Finding max and min ECG values
+INFO:root:Calculating the mean heart rate in beats-per-minute
+INFO:root:Finding the times that each heart beat occurred
+INFO:root:Finding max and min ECG values
+INFO:root:Finding the times that each heart beat occurred
+INFO:root:Finding max and min ECG values
+INFO:root:Creating JSON output file
